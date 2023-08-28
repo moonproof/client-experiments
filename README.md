@@ -5,7 +5,7 @@
 
 <h3>Как запустить проект</h2>
 
-1. Готовим артефакт в директория docker: `./gradlew bootJar`
+1. Готовим артефакт: `./gradlew bootJar`
 2. И выполняем следующую команду для запучка: `docker build --tag=client-experiment . && docker run client-experiment`
    Проект поднят, состоит из spring-boot-application и postgres
 
