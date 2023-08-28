@@ -6,8 +6,7 @@
 <h3>Как запустить проект</h2>
 
 1. Готовим артефакт: `./gradlew bootJar`
-2. И выполняем следующую команду для запучка: `docker build --tag=client-experiment . && docker run client-experiment`
-   Проект поднят, состоит из spring-boot-application и postgres
+2. И выполняем следующую команду для запуска: `docker build --tag=client-experiment . && docker run client-experiment`
 
 Проект выполнен по задаче https://github.com/appbooster/test-assignments/blob/master/tasks/backend.md
 
