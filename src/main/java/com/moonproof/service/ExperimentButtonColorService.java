@@ -2,10 +2,11 @@ package com.moonproof.service;
 
 import com.moonproof.domain.Experiment;
 import com.moonproof.dto.ExperimentDto;
-import com.moonproof.store.ExperimentStoreImpl;
+import com.moonproof.store.ExperimentStore;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,14 +16,15 @@ public class ExperimentButtonColorService extends BaseExperiment {
     private final static List<String> OPTIONS = List.of("#FF0000", "#00FF00", "#0000FF");
     private BigDecimal counter = new BigDecimal(1);
 
-    private final ExperimentStoreImpl experimentStoreImpl;
+    private final ExperimentStore experimentStoreImpl;
+    private final LocalDateTime createdDate;
 
-    public ExperimentButtonColorService(ExperimentStoreImpl experimentStoreImpl) {
+    public ExperimentButtonColorService(ExperimentStore experimentStoreImpl) {
         this.experimentStoreImpl = experimentStoreImpl;
+        createdDate = LocalDateTime.now().plusMinutes(3);
     }
 
-    @Override
-    public ExperimentDto get(String deviceToken) {
+    public ExperimentDto getByDeviceToken(String deviceToken) {
         return experimentStoreImpl.get(getKey(), deviceToken)
                 .map(this::newExperimentDto)
                 .orElseGet(() -> {
@@ -35,6 +37,11 @@ public class ExperimentButtonColorService extends BaseExperiment {
     @Override
     public String getKey() {
         return EXPERIMENT_KEY;
+    }
+
+    @Override
+    protected LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
     private String getCurrentOption() {

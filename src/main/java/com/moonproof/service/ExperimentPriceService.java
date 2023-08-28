@@ -7,6 +7,7 @@ import com.moonproof.store.ExperimentStore;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Map;
 
@@ -26,13 +27,14 @@ public class ExperimentPriceService extends BaseExperiment {
     private BigDecimal counter = new BigDecimal(1);
 
     private final ExperimentStore experimentPriceStore;
+    private final LocalDateTime createdDate;
 
     public ExperimentPriceService(ExperimentStore experimentStore) {
         this.experimentPriceStore = experimentStore;
+        this.createdDate = LocalDateTime.now().plusMinutes(2);
     }
 
-    @Override
-    public ExperimentDto get(String deviceToken) {
+    public ExperimentDto getByDeviceToken(String deviceToken) {
         return experimentPriceStore.get(getKey(), deviceToken)
                 .map(this::newExperimentDto)
                 .orElseGet(() -> {
@@ -40,6 +42,11 @@ public class ExperimentPriceService extends BaseExperiment {
                     experimentPriceStore.put(new Experiment(deviceToken, getKey(), currentOption));
                     return new ExperimentDto(EXPERIMENT_KEY, currentOption);
                 });
+    }
+
+    @Override
+    protected LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
     private String getCurrentOption() {
