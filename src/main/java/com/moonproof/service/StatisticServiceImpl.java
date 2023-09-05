@@ -24,7 +24,7 @@ public class StatisticServiceImpl implements StatisticService {
     @Override
     public StatisticDto generateStats() {
         Map<String, Map<String, Integer>> stats = new HashMap<>();
-        experimentServices.forEach((service) -> stats.put(service.getKey(), new HashMap<>()));
+        experimentServices.forEach((service) -> stats.put(service.getExperimentName(), new HashMap<>()));
 
         StatisticDto statistic = new StatisticDto();
         List<Experiment> experiments = experimentStore.getAll();

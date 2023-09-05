@@ -13,7 +13,7 @@ public class DeviceStorageImpl implements DeviceStorage {
     @Override
     public Optional<DeviceDomain> get(String device) {
         return devices.stream()
-                .filter(d -> device.equals(d.getDevice()))
+                .filter(d -> device.equals(d.getToken()))
                 .findFirst();
     }
 

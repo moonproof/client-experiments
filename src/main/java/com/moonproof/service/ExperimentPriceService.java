@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 public class ExperimentPriceService extends BaseExperiment {
 
-    private final static String EXPERIMENT_KEY = "price";
+    private final static String EXPERIMENT_NAME = "price";
 
     // KEY - price. VALUE - reminder from 20
     private final static Map<Integer, Integer> OPTIONS = Map.of(
@@ -27,26 +27,20 @@ public class ExperimentPriceService extends BaseExperiment {
     private BigDecimal counter = new BigDecimal(1);
 
     private final ExperimentStore experimentPriceStore;
-    private final LocalDateTime createdDate;
 
     public ExperimentPriceService(ExperimentStore experimentStore) {
+        super(LocalDateTime.now().plusMinutes(2));
         this.experimentPriceStore = experimentStore;
-        this.createdDate = LocalDateTime.now().plusMinutes(2);
     }
 
     public ExperimentDto getByDeviceToken(String deviceToken) {
-        return experimentPriceStore.get(getKey(), deviceToken)
+        return experimentPriceStore.get(getExperimentName(), deviceToken)
                 .map(this::newExperimentDto)
                 .orElseGet(() -> {
                     String currentOption = getCurrentOption();
-                    experimentPriceStore.put(new Experiment(deviceToken, getKey(), currentOption));
-                    return new ExperimentDto(EXPERIMENT_KEY, currentOption);
+                    experimentPriceStore.put(new Experiment(deviceToken, getExperimentName(), currentOption));
+                    return new ExperimentDto(EXPERIMENT_NAME, currentOption);
                 });
-    }
-
-    @Override
-    protected LocalDateTime getCreatedDate() {
-        return createdDate;
     }
 
     private String getCurrentOption() {
@@ -61,7 +55,7 @@ public class ExperimentPriceService extends BaseExperiment {
     }
 
     @Override
-    public String getKey() {
-        return EXPERIMENT_KEY;
+    public String getExperimentName() {
+        return EXPERIMENT_NAME;
     }
 }

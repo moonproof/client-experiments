@@ -10,8 +10,14 @@ import java.time.LocalDateTime;
 
 public abstract class BaseExperiment implements ExperimentService {
 
+    private final LocalDateTime createdDate;
+
     @Autowired
     private DeviceService deviceService;
+
+    public BaseExperiment(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
 
     @Override
     public ExperimentDto get(String deviceToken) {
@@ -27,12 +33,14 @@ public abstract class BaseExperiment implements ExperimentService {
     abstract protected ExperimentDto getByDeviceToken(String deviceToken);
 
     protected ExperimentDto newExperimentDto(Experiment experiment) {
-        return new ExperimentDto(getKey(), experiment.getValue());
+        return new ExperimentDto(getExperimentName(), experiment.getValue());
     }
 
     protected ExperimentDto newExperimentDto(String value) {
-        return new ExperimentDto(getKey(), value);
+        return new ExperimentDto(getExperimentName(), value);
     }
 
-    protected abstract LocalDateTime getCreatedDate();
+    protected LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
 }
